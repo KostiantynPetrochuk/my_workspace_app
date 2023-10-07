@@ -1,13 +1,14 @@
 import { Outlet } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
-import Backdrop from "@mui/material/Backdrop";
-import CircularProgress from "@mui/material/CircularProgress";
 
 import useRefreshToken from "../hooks/useRefreshToken";
+import useLoading from "../hooks/useLoading";
 import { selectPersist } from "../features/persist/persistSlice";
+import Loading from "./Loading";
 
 const PersistLogin = () => {
+  const { startLoading, stopLoading } = useLoading();
   const refresh = useRefreshToken();
   const persist = useSelector(selectPersist);
   const done = useRef(false);
@@ -15,11 +16,13 @@ const PersistLogin = () => {
 
   useEffect(() => {
     const verifyRefreshToken = async () => {
+      startLoading();
       try {
         await refresh();
       } catch (error) {
         console.log(error);
       } finally {
+        stopLoading();
         setIsLoading(false);
       }
     };
@@ -30,23 +33,7 @@ const PersistLogin = () => {
     }
   }, []);
 
-  return (
-    <>
-      {!persist ? (
-        <Outlet />
-      ) : isLoading ? (
-        <Backdrop
-          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          open={!isLoading}
-          onClick={() => setIsLoading(false)}
-        >
-          <CircularProgress color="inherit" />
-        </Backdrop>
-      ) : (
-        <Outlet />
-      )}
-    </>
-  );
+  return <>{!persist ? <Outlet /> : isLoading ? <Loading /> : <Outlet />}</>;
 };
 
 export default PersistLogin;

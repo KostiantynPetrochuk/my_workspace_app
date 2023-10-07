@@ -20,14 +20,13 @@ import { API_URL } from "../constants";
 
 const Login = () => {
   const { setAuth } = useAuth();
-
   const dispatch = useDispatch();
-
   const persist = useSelector(selectPersist);
-
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
+
+  const navigateToRegister = () => navigate("/register");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -44,15 +43,13 @@ const Login = () => {
       redirect: "follow",
       referrerPolicy: "no-referrer",
       body: JSON.stringify({
-        user: data.get("email"),
+        email: data.get("email"),
         pwd: data.get("password"),
       }),
     });
 
     const authData = await response.json();
-
     setAuth(authData);
-
     navigate(from, { replace: true });
   };
 
@@ -83,7 +80,7 @@ const Login = () => {
             required
             fullWidth
             id="email"
-            label="Логін"
+            label="Електронна пошта"
             name="email"
             autoComplete="email"
             autoFocus
@@ -103,13 +100,11 @@ const Login = () => {
               <Checkbox
                 value="remember"
                 checked={persist}
-                onClick={() => {
-                  if (persist) {
-                    dispatch(setPersist(false));
-                  } else {
-                    dispatch(setPersist(true));
-                  }
-                }}
+                onClick={() =>
+                  persist
+                    ? dispatch(setPersist(false))
+                    : dispatch(setPersist(true))
+                }
                 color="primary"
               />
             }
@@ -130,7 +125,12 @@ const Login = () => {
               </Link>
             </Grid>
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link
+                // href="№"
+                sx={{ cursor: "pointer" }}
+                variant="body2"
+                onClick={navigateToRegister}
+              >
                 {"Не маєте аккаунту? Реєстрація"}
               </Link>
             </Grid>

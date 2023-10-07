@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -9,11 +11,23 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
+import useAuth from "../hooks/useAuth";
+import useLoading from "../hooks/useLoading";
+import useMessage from "../hooks/useMessage";
 import { API_URL } from "../constants";
 
 const Register = () => {
+  const navigate = useNavigate();
+  const showMessage = useMessage();
+  const { setAuth } = useAuth();
+  const { startLoading, stopLoading } = useLoading();
+  const [isEmailValid, setIsEmailValid] = useState(true);
+
+  const navigateToLogin = () => navigate("/login");
+
   const handleSubmit = async (event) => {
     event.preventDefault();
+    startLoading();
     const data = new FormData(event.currentTarget);
 
     const response = await fetch(`${API_URL}register`, {
@@ -27,10 +41,36 @@ const Register = () => {
       redirect: "follow",
       referrerPolicy: "no-referrer",
       body: JSON.stringify({
-        user: data.get("email"),
+        firstName: data.get("firstName"),
+        lastName: data.get("lastName"),
+        email: data.get("email"),
         pwd: data.get("password"),
       }),
     });
+
+    if (response.status === 201) {
+      stopLoading();
+      const authData = await response.json();
+      setAuth(authData);
+
+      showMessage({
+        title: "Успіх!",
+        text: "Ви успішно зареєстровані в системі!",
+        severity: "success",
+      });
+
+      navigate("/", { replace: true });
+    }
+    if (response.status === 409) {
+      stopLoading();
+      setIsEmailValid(false);
+
+      showMessage({
+        title: "Помилка!",
+        text: "Такий користувач вже існує!",
+        severity: "error",
+      });
+    }
   };
 
   return (
@@ -75,12 +115,14 @@ const Register = () => {
             </Grid>
             <Grid item xs={12}>
               <TextField
+                error={!isEmailValid}
                 required
                 fullWidth
                 id="email"
-                label="Логін"
+                label="Електронна пошта"
                 name="email"
                 autoComplete="email"
+                onInput={() => setIsEmailValid(true)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -95,6 +137,7 @@ const Register = () => {
               />
             </Grid>
           </Grid>
+
           <Button
             type="submit"
             fullWidth
@@ -105,7 +148,11 @@ const Register = () => {
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link
+                sx={{ cursor: "pointer" }}
+                variant="body2"
+                onClick={navigateToLogin}
+              >
                 Вже маєте аккаунт? Увійти
               </Link>
             </Grid>

@@ -1,12 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { Provider } from "react-redux";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
+
 import App from "./App.jsx";
 import theme from "./theme";
-import { Provider } from "react-redux";
 import store from "./app/store.js";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Loading from "./components/Loading.jsx";
+import Message from "./components/Message.jsx";
 
 import "./index.css";
 
@@ -17,6 +20,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <CssBaseline />
       <BrowserRouter>
         <Provider store={store}>
+          <Loading />
+          <Message />
           <Routes>
             <Route path="/*" element={<App />} />
           </Routes>
