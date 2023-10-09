@@ -9,30 +9,30 @@ import Missing from "./pages/Missing";
 import RequireAuth from "./components/RequireAuth";
 import PersistLogin from "./components/PersistLogin";
 import FixingTime from "./pages/FixingTime";
-import { ROLES } from "./constants";
+import { ROLES, APP_ROUTES } from "./constants";
 
 import "./App.css";
 
 const App = () => (
   <Routes>
-    <Route path="/" element={<Layout />}>
+    <Route path={APP_ROUTES.HOME} element={<Layout />}>
       {/* publick routes */}
-      <Route path="login" element={<Login />} />
-      <Route path="register" element={<Register />} />
-      <Route path="unauthorized" element={<Unauthorized />} />
+      <Route path={APP_ROUTES.LOGIN} element={<Login />} />
+      <Route path={APP_ROUTES.REGISTER} element={<Register />} />
+      <Route path={APP_ROUTES.UNAUTHORIZED} element={<Unauthorized />} />
 
       {/* protected routes */}
       <Route element={<PersistLogin />}>
         <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
-          <Route path="/" element={<Home />} />
+          <Route path={APP_ROUTES.HOME} element={<Home />} />
         </Route>
 
         <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
-          <Route path="admin" element={<Admin />} />
+          <Route path={APP_ROUTES.ADMIN} element={<Admin />} />
         </Route>
 
         <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
-          <Route path="fixingTime" element={<FixingTime />} />
+          <Route path={APP_ROUTES.FIXING_TIME} element={<FixingTime />} />
         </Route>
       </Route>
 

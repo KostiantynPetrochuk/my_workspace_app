@@ -18,7 +18,7 @@ import useAuth from "../hooks/useAuth";
 import useMessage from "../hooks/useMessage";
 import useLoading from "../hooks/useLoading";
 import { selectPersist, setPersist } from "../features/persist/persistSlice";
-import { API_URL } from "../constants";
+import { API_URL, APP_ROUTES } from "../constants";
 
 const Login = () => {
   const { setAuth } = useAuth();
@@ -28,12 +28,12 @@ const Login = () => {
   const persist = useSelector(selectPersist);
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
+  const from = location.state?.from?.pathname || APP_ROUTES.HOME;
 
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [isPasswordValid, setIsPasswordValid] = useState(true);
 
-  const navigateToRegister = () => navigate("/register");
+  const navigateToRegister = () => navigate(APP_ROUTES.REGISTER);
 
   const handleInputEmail = () => setIsEmailValid(true);
 

@@ -17,6 +17,7 @@ import AddAlarmIcon from "@mui/icons-material/AddAlarm";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import HomeIcon from "@mui/icons-material/Home";
 import { Paper } from "@mui/material";
+import { APP_ROUTES } from "../constants";
 
 import useLogout from "../hooks/useLogout";
 
@@ -27,7 +28,7 @@ const Header = () => {
 
   const signOut = async () => {
     await logout();
-    navigate("/login");
+    navigate(APP_ROUTES.LOGIN);
   };
 
   const toggleDrawer = (open) => (event) => {
@@ -68,7 +69,7 @@ const Header = () => {
               </Box>
 
               <List>
-                <Link to="/">
+                <Link to={APP_ROUTES.HOME}>
                   <ListItem key={"home"} disablePadding>
                     <ListItemButton>
                       <ListItemIcon>
@@ -79,7 +80,7 @@ const Header = () => {
                   </ListItem>
                 </Link>
 
-                <Link to="/fixingTime">
+                <Link to={APP_ROUTES.FIXING_TIME}>
                   <ListItem key={"fixingTime"} disablePadding>
                     <ListItemButton>
                       <ListItemIcon>
@@ -90,7 +91,7 @@ const Header = () => {
                   </ListItem>
                 </Link>
 
-                <Link to="/admin">
+                <Link to={APP_ROUTES.ADMIN}>
                   <ListItem key={"admin"} disablePadding>
                     <ListItemButton>
                       <ListItemIcon>

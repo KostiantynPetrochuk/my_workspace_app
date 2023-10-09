@@ -1,6 +1,7 @@
 import { useNavigate, Link } from "react-router-dom";
 
 import useLogout from "../hooks/useLogout";
+import { APP_ROUTES } from "../constants";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -8,14 +9,14 @@ const Home = () => {
 
   const signOut = async () => {
     await logout();
-    navigate("/login");
+    navigate(APP_ROUTES.LOGIN);
   };
 
   return (
     <section style={{ textAlign: "center" }}>
       <h1>Домашня сторінка</h1>
       <br />
-      <Link to="/admin">Адмін сторінка</Link>
+      <Link to={APP_ROUTES.ADMIN}>Адмін сторінка</Link>
       <div>
         <button style={{ marginTop: "12px" }} onClick={signOut}>
           Вихід

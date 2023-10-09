@@ -14,7 +14,7 @@ import Container from "@mui/material/Container";
 import useAuth from "../hooks/useAuth";
 import useLoading from "../hooks/useLoading";
 import useMessage from "../hooks/useMessage";
-import { API_URL } from "../constants";
+import { API_URL, APP_ROUTES } from "../constants";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ const Register = () => {
   const { startLoading, stopLoading } = useLoading();
   const [isEmailValid, setIsEmailValid] = useState(true);
 
-  const navigateToLogin = () => navigate("/login");
+  const navigateToLogin = () => navigate(APP_ROUTES.LOGIN);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

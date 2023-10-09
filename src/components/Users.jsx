@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import useFetchPrivate from "../hooks/useFetchPrivate";
+import { APP_ROUTES } from "../constants";
 
 const Users = () => {
   const [users, setUsers] = useState();
@@ -16,7 +17,7 @@ const Users = () => {
       setUsers(response);
     } catch (error) {
       console.log(error);
-      navigate("/login", { state: { from: location }, replace: true });
+      navigate(APP_ROUTES.LOGIN, { state: { from: location }, replace: true });
     }
   };
 
