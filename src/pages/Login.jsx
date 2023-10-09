@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import Avatar from "@mui/material/Avatar";
@@ -15,42 +15,96 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
 import useAuth from "../hooks/useAuth";
+import useMessage from "../hooks/useMessage";
+import useLoading from "../hooks/useLoading";
 import { selectPersist, setPersist } from "../features/persist/persistSlice";
 import { API_URL } from "../constants";
 
 const Login = () => {
   const { setAuth } = useAuth();
+  const showMessage = useMessage();
+  const { startLoading, stopLoading } = useLoading();
   const dispatch = useDispatch();
   const persist = useSelector(selectPersist);
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
 
+  const [isEmailValid, setIsEmailValid] = useState(true);
+  const [isPasswordValid, setIsPasswordValid] = useState(true);
+
   const navigateToRegister = () => navigate("/register");
+
+  const handleInputEmail = () => setIsEmailValid(true);
+
+  const handleInputPassword = () => setIsPasswordValid(true);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    const email = data.get("email");
+    const pwd = data.get("password");
 
-    const response = await fetch(`${API_URL}auth`, {
-      method: "POST",
-      mode: "cors",
-      cache: "no-cache",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      redirect: "follow",
-      referrerPolicy: "no-referrer",
-      body: JSON.stringify({
-        email: data.get("email"),
-        pwd: data.get("password"),
-      }),
-    });
+    if (!email.length) {
+      setIsEmailValid(false);
+    }
 
-    const authData = await response.json();
-    setAuth(authData);
-    navigate(from, { replace: true });
+    if (!pwd.length) {
+      setIsPasswordValid(false);
+    }
+
+    if (!email.length || !pwd.length) {
+      showMessage({
+        title: "Помилка!",
+        text: "Вкажіть коректні дані: електронна пошта та пароль!",
+        severity: "error",
+      });
+      return;
+    }
+
+    try {
+      startLoading();
+      const response = await fetch(`${API_URL}auth`, {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        redirect: "follow",
+        referrerPolicy: "no-referrer",
+        body: JSON.stringify({
+          email,
+          pwd,
+        }),
+      });
+
+      if (response.status === 401) {
+        setIsEmailValid(false);
+        setIsPasswordValid(false);
+        showMessage({
+          title: "Помилка!",
+          text: "Не вірно вказано електронну пошту, або пароль.",
+          severity: "error",
+        });
+        stopLoading();
+        return;
+      }
+
+      const authData = await response.json();
+      setAuth(authData);
+      stopLoading();
+      navigate(from, { replace: true });
+    } catch (error) {
+      stopLoading();
+      console.log("error", error);
+      showMessage({
+        title: "Помилка!",
+        text: "Сервер не відповідає. Будь ласка, спробуйте пізніше.",
+        severity: "error",
+      });
+    }
   };
 
   useEffect(() => {
@@ -76,6 +130,7 @@ const Login = () => {
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
+            error={!isEmailValid}
             margin="normal"
             required
             fullWidth
@@ -84,8 +139,10 @@ const Login = () => {
             name="email"
             autoComplete="email"
             autoFocus
+            onInput={handleInputEmail}
           />
           <TextField
+            error={!isPasswordValid}
             margin="normal"
             required
             fullWidth
@@ -94,6 +151,7 @@ const Login = () => {
             type="password"
             id="password"
             autoComplete="current-password"
+            onInput={handleInputPassword}
           />
           <FormControlLabel
             control={
@@ -126,7 +184,6 @@ const Login = () => {
             </Grid>
             <Grid item>
               <Link
-                // href="№"
                 sx={{ cursor: "pointer" }}
                 variant="body2"
                 onClick={navigateToRegister}

@@ -7,7 +7,7 @@ const useMessage = () => {
 
   const showMessage = (options) => {
     if (!options.autoHideDuration) {
-      options.autoHideDuration = 6000;
+      options.autoHideDuration = 3000;
     }
 
     if (!options.severity) {

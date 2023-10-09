@@ -6,7 +6,7 @@ const initialState = {
   title: "Успіх!",
   vertical: "top",
   horizontal: "center",
-  autoHideDuration: 6000,
+  autoHideDuration: 3000,
   open: false,
 };
 
