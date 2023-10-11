@@ -43,6 +43,7 @@ const Register = () => {
       body: JSON.stringify({
         firstName: data.get("firstName"),
         lastName: data.get("lastName"),
+        surrName: data.get("surrName"),
         email: data.get("email"),
         pwd: data.get("password"),
       }),
@@ -111,6 +112,16 @@ const Register = () => {
                 label="Прізвище"
                 name="lastName"
                 autoComplete="family-name"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                id="surrName"
+                label="По батькові"
+                name="surrName"
+                autoComplete="surrName"
               />
             </Grid>
             <Grid item xs={12}>

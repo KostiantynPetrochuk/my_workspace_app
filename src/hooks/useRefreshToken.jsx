@@ -19,7 +19,7 @@ const useRefreshToken = () => {
 
     const result = await response.json();
 
-    setAuth({ ...auth, accessToken: result.accessToken, roles: result.roles });
+    setAuth({ ...auth, ...result });
 
     return result.accessToken;
   };
