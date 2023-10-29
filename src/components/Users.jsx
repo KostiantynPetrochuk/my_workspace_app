@@ -1,27 +1,42 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
 import useFetchPrivate from "../hooks/useFetchPrivate";
+import useLoading from "../hooks/useLoading";
 import { APP_ROUTES } from "../constants";
+import { setUsers, selectUsers } from "../features/users/usersSlice";
 
 const Users = () => {
-  const [users, setUsers] = useState();
+  const dispatch = useDispatch();
   const fetchPrivate = useFetchPrivate();
+  const { startLoading, stopLoading } = useLoading();
   const usersFetched = useRef(false);
   const navigate = useNavigate();
   const location = useLocation();
-
-  const fetchUsers = async () => {
-    try {
-      const response = await fetchPrivate("users");
-      setUsers(response);
-    } catch (error) {
-      console.log(error);
-      navigate(APP_ROUTES.LOGIN, { state: { from: location }, replace: true });
-    }
-  };
+  const users = useSelector(selectUsers);
 
   useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        if (!usersFetched.current) {
+          startLoading();
+        }
+        const response = await fetchPrivate("users");
+        dispatch(setUsers(response));
+        stopLoading();
+      } catch (error) {
+        if (!usersFetched.current) {
+          stopLoading();
+        }
+        console.log(error);
+        navigate(APP_ROUTES.LOGIN, {
+          state: { from: location },
+          replace: true,
+        });
+      }
+    };
+
     if (usersFetched.current === false) {
       fetchUsers();
       usersFetched.current = true;
@@ -34,7 +49,7 @@ const Users = () => {
     return () => {
       clearInterval(intervalId);
     };
-  }, []);
+  }, [dispatch, fetchPrivate, location, navigate, startLoading, stopLoading]);
 
   return (
     <article>
@@ -42,7 +57,7 @@ const Users = () => {
       {users?.length ? (
         <ul>
           {users.map((user, i) => (
-            <li key={i}>{user?.username}</li>
+            <li key={i}>{user?.email}</li>
           ))}
         </ul>
       ) : (

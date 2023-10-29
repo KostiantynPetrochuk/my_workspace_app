@@ -9,7 +9,7 @@ export const APP_ROUTES = {
   HOME: "/",
   LOGIN: "/login",
   REGISTER: "/register",
-  FIXING_TIME: "/fixingTime",
+  USERS_TIME_LOGS: "/usersTimeLogs",
   ADMIN: "/admin",
   UNAUTHORIZED: "/unauthorized",
 };

@@ -1,11 +1,16 @@
+import { useDispatch } from "react-redux";
+
 import useAuth from "./useAuth";
 import { API_URL } from "../constants";
+import { setUsers } from "../features/users/usersSlice";
 
 const useLogout = () => {
+  const dispatch = useDispatch();
   const { setAuth } = useAuth();
 
   const logout = async () => {
     setAuth({});
+    dispatch(setUsers({}));
 
     try {
       await fetch(`${API_URL}logout`, {

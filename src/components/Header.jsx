@@ -80,8 +80,8 @@ const Header = () => {
                   </ListItem>
                 </Link>
 
-                <Link to={APP_ROUTES.FIXING_TIME}>
-                  <ListItem key={"fixingTime"} disablePadding>
+                <Link to={APP_ROUTES.USERS_TIME_LOGS}>
+                  <ListItem key={"usersTimeLogs"} disablePadding>
                     <ListItemButton>
                       <ListItemIcon>
                         <AddAlarmIcon />
