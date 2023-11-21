@@ -11,6 +11,7 @@ const useMessage = () => {
     }
 
     if (!options.severity) {
+      // success | info | error | warning
       options.severity = "success";
     }
 

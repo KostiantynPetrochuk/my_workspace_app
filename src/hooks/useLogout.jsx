@@ -10,7 +10,7 @@ const useLogout = () => {
 
   const logout = async () => {
     setAuth({});
-    dispatch(setUsers({}));
+    dispatch(setUsers([]));
 
     try {
       await fetch(`${API_URL}logout`, {

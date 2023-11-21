@@ -1,37 +1,28 @@
 import { useState, useRef, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Button from "@mui/material/Button";
+import { format } from "date-fns";
+
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
-import { Card } from "@mui/material";
-import Select from "@mui/material/Select";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
 
 import { APP_ROUTES } from "../constants";
-import useAuth from "../hooks/useAuth";
 import useLoading from "../hooks/useLoading";
 import useFetchPrivate from "../hooks/useFetchPrivate";
-import { setUsers, selectUsers } from "../features/users/usersSlice";
+import { setUsers } from "../features/users/usersSlice";
+import { UsersTimeLogsList } from "../partials/UsersTimeLogs";
+import UsersTimeLogsForm from "../partials/UsersTimeLogs/UsersTimeLogsForm/UsersTimeLogsForm";
 
 const UsersTimeLogs = () => {
   const fetchPrivate = useFetchPrivate();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { startLoading, stopLoading } = useLoading();
-  const { auth } = useAuth();
-  const [selectedUser, setSelectedUser] = useState(auth.userId);
+  const [logsList, setLogsList] = useState([]);
   const usersFetched = useRef(false);
-
-  const users = useSelector(selectUsers);
-
-  const handleChangeSelectedUser = (event) => {
-    setSelectedUser(event.target.value);
-  };
+  const todayDateString = format(new Date(), "dd.MM.yyyy");
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -61,33 +52,12 @@ const UsersTimeLogs = () => {
 
     const intervalId = setInterval(() => {
       fetchUsers();
-    }, 10000);
+    }, 60000);
 
     return () => {
       clearInterval(intervalId);
     };
   }, [dispatch, fetchPrivate, navigate, startLoading, stopLoading]);
-
-  const handleClick = () => {
-    const addUserTimeLog = async () => {
-      try {
-        const response = await fetchPrivate("usersTimeLogs", {
-          method: "POST",
-          body: JSON.stringify({ message: "hello" }),
-        });
-        console.log("response", response);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    addUserTimeLog();
-  };
-
-  const menuItems = users.map((user) => (
-    <MenuItem key={user._id} value={user._id}>
-      {`${user.firstName} ${user.lastName} ${user.surrName}`}
-    </MenuItem>
-  ));
 
   return (
     <Container component="main">
@@ -114,33 +84,22 @@ const UsersTimeLogs = () => {
           </Typography>
         </Paper>
 
-        <Card elevation={24} sx={{ marginTop: 2, padding: 2, width: "50%" }}>
-          <FormControl
-            fullWidth
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}
-          >
-            <InputLabel id="demo-simple-select-label">Працівник</InputLabel>
-            <Select
-              sx={{ width: "65%" }}
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={selectedUser}
-              label="Працівник"
-              onChange={handleChangeSelectedUser}
-            >
-              {menuItems}
-            </Select>
+        <Paper
+          sx={{
+            padding: 2,
+            textAlign: "center",
+            marginTop: 2,
+            width: "20%",
+          }}
+          elevation={24}
+        >
+          <Typography variant="h5" component="h2">
+            {todayDateString}
+          </Typography>
+        </Paper>
 
-            <Button variant="contained" onClick={handleClick}>
-              Розпочати
-            </Button>
-            {/* <Button variant="contained">Завершити</Button> */}
-          </FormControl>
-        </Card>
+        <UsersTimeLogsForm setLogsList={setLogsList} />
+        <UsersTimeLogsList logsList={logsList} />
       </Box>
     </Container>
   );

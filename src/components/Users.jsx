@@ -44,7 +44,7 @@ const Users = () => {
 
     const intervalId = setInterval(() => {
       fetchUsers();
-    }, 10000);
+    }, 60000);
 
     return () => {
       clearInterval(intervalId);

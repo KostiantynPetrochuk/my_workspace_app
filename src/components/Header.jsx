@@ -17,8 +17,8 @@ import AddAlarmIcon from "@mui/icons-material/AddAlarm";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import HomeIcon from "@mui/icons-material/Home";
 import { Paper } from "@mui/material";
-import { APP_ROUTES } from "../constants";
 
+import { APP_ROUTES } from "../constants";
 import useLogout from "../hooks/useLogout";
 
 const Header = () => {
@@ -65,7 +65,16 @@ const Header = () => {
               onKeyDown={toggleDrawer(false)}
             >
               <Box sx={{ width: "100%" }} role="presentation">
-                <Paper sx={{ padding: "6px 0", margin: "8px" }}>Кантора</Paper>
+                <Paper
+                  sx={{
+                    padding: "6px 0",
+                    margin: "8px",
+                    backgroundColor: "#556cd6", // todo: use from theme or MUI
+                    color: "white",
+                  }}
+                >
+                  Кантора
+                </Paper>
               </Box>
 
               <List>
