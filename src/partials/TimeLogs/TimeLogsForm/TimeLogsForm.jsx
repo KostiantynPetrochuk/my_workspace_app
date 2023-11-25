@@ -28,7 +28,7 @@ import ConfirmButton from "../ConfirmButton";
 import CancelButton from "../CancelButton";
 import { getButttonState, getLogsList } from "../Helpers";
 
-const UsersTimeLogsForm = ({ setLogsList }) => {
+const TimeLogsForm = ({ setLogsList }) => {
   const dispatch = useDispatch();
   const showMessage = useMessage();
   const fetchPrivate = useFetchPrivate();
@@ -72,7 +72,7 @@ const UsersTimeLogsForm = ({ setLogsList }) => {
       handleClosePopover();
       startLoading();
       try {
-        const response = await fetchPrivate("usersTimeLogs", {
+        const response = await fetchPrivate("timeLogs", {
           method: "POST",
           body: JSON.stringify({ userId: selectedUserId }),
         });
@@ -204,8 +204,8 @@ const UsersTimeLogsForm = ({ setLogsList }) => {
   );
 };
 
-UsersTimeLogsForm.propTypes = {
+TimeLogsForm.propTypes = {
   setLogsList: PropTypes.func,
 };
 
-export default UsersTimeLogsForm;
+export default TimeLogsForm;

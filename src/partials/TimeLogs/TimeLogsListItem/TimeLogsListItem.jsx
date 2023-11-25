@@ -6,7 +6,7 @@ import ListItemText from "@mui/material/ListItemText";
 import WorkIcon from "@mui/icons-material/Work";
 import WorkOffIcon from "@mui/icons-material/WorkOff";
 
-const UsersTimeLogsListItem = ({ log }) => {
+const TimeLogsListItem = ({ log }) => {
   const logLabel = log.status === "in" ? "Вхід" : "Вихід";
   return (
     <ListItem key={log.date}>
@@ -26,8 +26,8 @@ const UsersTimeLogsListItem = ({ log }) => {
   );
 };
 
-UsersTimeLogsListItem.propTypes = {
+TimeLogsListItem.propTypes = {
   log: PropTypes.object,
 };
 
-export default UsersTimeLogsListItem;
+export default TimeLogsListItem;

@@ -12,10 +12,9 @@ import { APP_ROUTES } from "../constants";
 import useLoading from "../hooks/useLoading";
 import useFetchPrivate from "../hooks/useFetchPrivate";
 import { setUsers } from "../features/users/usersSlice";
-import { UsersTimeLogsList } from "../partials/UsersTimeLogs";
-import UsersTimeLogsForm from "../partials/UsersTimeLogs/UsersTimeLogsForm/UsersTimeLogsForm";
+import { TimeLogsList, TimeLogsForm } from "../partials/TimeLogs";
 
-const UsersTimeLogs = () => {
+const TimeLogs = () => {
   const fetchPrivate = useFetchPrivate();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -98,11 +97,11 @@ const UsersTimeLogs = () => {
           </Typography>
         </Paper>
 
-        <UsersTimeLogsForm setLogsList={setLogsList} />
-        <UsersTimeLogsList logsList={logsList} />
+        <TimeLogsForm setLogsList={setLogsList} />
+        <TimeLogsList logsList={logsList} />
       </Box>
     </Container>
   );
 };
 
-export default UsersTimeLogs;
+export default TimeLogs;

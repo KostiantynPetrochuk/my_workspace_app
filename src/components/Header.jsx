@@ -90,7 +90,7 @@ const Header = () => {
                 </Link>
 
                 <Link to={APP_ROUTES.USERS_TIME_LOGS}>
-                  <ListItem key={"usersTimeLogs"} disablePadding>
+                  <ListItem key={"timeLogs"} disablePadding>
                     <ListItemButton>
                       <ListItemIcon>
                         <AddAlarmIcon />

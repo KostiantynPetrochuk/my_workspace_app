@@ -9,7 +9,7 @@ import Missing from "./pages/Missing";
 import RequireAuth from "./components/RequireAuth";
 import PersistLogin from "./components/PersistLogin";
 import { ROLES, APP_ROUTES } from "./constants";
-import UsersTimeLogs from "./pages/UsersTimeLogs";
+import TimeLogs from "./pages/TimeLogs";
 
 import "./App.css";
 
@@ -34,7 +34,7 @@ const App = () => (
         <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
           <Route
             path={APP_ROUTES.USERS_TIME_LOGS}
-            element={<UsersTimeLogs />}
+            element={<TimeLogs />}
           />
         </Route>
       </Route>

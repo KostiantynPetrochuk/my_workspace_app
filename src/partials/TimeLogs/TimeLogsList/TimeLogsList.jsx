@@ -3,11 +3,11 @@ import Paper from "@mui/material/Paper";
 import List from "@mui/material/List";
 import ListSubheader from "@mui/material/ListSubheader";
 
-import UsersTimeLogsListItem from "../UsersTimeLogsListItem";
+import TimeLogsListItem from "../TimeLogsListItem";
 
-const UsersTimeLogsList = ({ logsList }) => {
+const TimeLogsList = ({ logsList }) => {
   const logItemsList = logsList.map((log) => (
-    <UsersTimeLogsListItem key={log.date} log={log} />
+    <TimeLogsListItem key={log.date} log={log} />
   ));
 
   return (
@@ -42,8 +42,8 @@ const UsersTimeLogsList = ({ logsList }) => {
   );
 };
 
-UsersTimeLogsList.propTypes = {
+TimeLogsList.propTypes = {
   logsList: PropTypes.array,
 };
 
-export default UsersTimeLogsList;
+export default TimeLogsList;
