@@ -13,7 +13,7 @@ const usersSlice = createSlice({
       const { userId, data } = action.payload;
       const userToUpdate = state.find((user) => user._id === userId);
       if (data.status === "in") {
-        userToUpdate.timelogsHistory.unshift(data);
+        userToUpdate.timelogsHistory.push(data);
       }
 
       if (data.status === "out") {

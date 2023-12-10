@@ -15,6 +15,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import AddAlarmIcon from "@mui/icons-material/AddAlarm";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import HomeIcon from "@mui/icons-material/Home";
 import { Paper } from "@mui/material";
 
@@ -89,13 +90,24 @@ const Header = () => {
                   </ListItem>
                 </Link>
 
-                <Link to={APP_ROUTES.USERS_TIME_LOGS}>
+                <Link to={APP_ROUTES.TIME_LOGS}>
                   <ListItem key={"timeLogs"} disablePadding>
                     <ListItemButton>
                       <ListItemIcon>
                         <AddAlarmIcon />
                       </ListItemIcon>
                       <ListItemText primary={"Фіксація часу"} />
+                    </ListItemButton>
+                  </ListItem>
+                </Link>
+
+                <Link to={APP_ROUTES.TIME_SHEET}>
+                  <ListItem key={"timeSheet"} disablePadding>
+                    <ListItemButton>
+                      <ListItemIcon>
+                        <CalendarMonthIcon />
+                      </ListItemIcon>
+                      <ListItemText primary={"Табель"} />
                     </ListItemButton>
                   </ListItem>
                 </Link>

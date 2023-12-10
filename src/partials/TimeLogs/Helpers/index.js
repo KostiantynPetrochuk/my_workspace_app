@@ -21,9 +21,8 @@ export const getLogsList = (user) => {
         status: "out",
         date: log.entries.out.date,
       };
-
-      preparedLogsList.push(logBodyOut);
       preparedLogsList.push(logBodyIn);
+      preparedLogsList.push(logBodyOut);
     }
   });
 
