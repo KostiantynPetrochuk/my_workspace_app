@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 
 import Box from "@mui/material/Box";
@@ -10,7 +9,6 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
-import useAuth from "../../../hooks/useAuth";
 import { selectUsers } from "../../../features/users/usersSlice";
 
 const TimeSheetForm = ({
@@ -21,7 +19,6 @@ const TimeSheetForm = ({
   month,
   setMonth,
 }) => {
-  const { auth } = useAuth();
   const users = useSelector(selectUsers);
 
   const handleChangeSelectedUser = (event) => {
@@ -116,8 +113,13 @@ const TimeSheetForm = ({
   );
 };
 
-// TimeLogsForm.propTypes = {
-//   setLogsList: PropTypes.func,
-// };
+TimeSheetForm.propTypes = {
+  selectedUserId: PropTypes.string,
+  setSelectedUserId: PropTypes.func,
+  year: PropTypes.instanceOf(Date),
+  setYear: PropTypes.func,
+  month: PropTypes.instanceOf(Date),
+  setMonth: PropTypes.func,
+};
 
 export default TimeSheetForm;
