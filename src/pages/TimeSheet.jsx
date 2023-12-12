@@ -148,7 +148,11 @@ const TimeSheet = () => {
         month={month}
         setMonth={setMonth}
       />
-      <TimeSheetCalendar />
+      <TimeSheetCalendar
+        logsList={selectedUserLogs}
+        year={year.getFullYear()}
+        month={month.getMonth()}
+      />
     </Container>
   );
 };
