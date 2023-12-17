@@ -16,6 +16,7 @@ import TimeSheetForm from "../partials/TimeSheet/TimeSheetForm/TimeSheetForm";
 import TimeSheetCalendar from "../partials/TimeSheet/TimeSheetCalendar/TimeSheetCalendar";
 import useAuth from "../hooks/useAuth";
 import { getParsedLogs } from "../partials/TimeSheet/helpers";
+import { setSelectedUserLogs } from "../features/selectedUserLogs/selectedUserLogsSlice";
 
 const TimeSheet = () => {
   const fetchPrivate = useFetchPrivate();
@@ -29,7 +30,6 @@ const TimeSheet = () => {
   const [selectedUserId, setSelectedUserId] = useState(
     auth.userId && users.length ? auth.userId : ""
   );
-  const [selectedUserLogs, setSelectedUserLogs] = useState();
 
   const [year, setYear] = useState(new Date());
   const [month, setMonth] = useState(new Date());
@@ -99,8 +99,8 @@ const TimeSheet = () => {
           const lastDay = endDate.getDate();
           const { userLogs } = response;
           const parsedLogs = getParsedLogs(userLogs, lastDay, currentDate);
+          dispatch(setSelectedUserLogs(parsedLogs));
 
-          setSelectedUserLogs(parsedLogs);
           stopLoading();
         } catch (error) {
           stopLoading();
@@ -148,11 +148,7 @@ const TimeSheet = () => {
         month={month}
         setMonth={setMonth}
       />
-      <TimeSheetCalendar
-        logsList={selectedUserLogs}
-        year={year.getFullYear()}
-        month={month.getMonth()}
-      />
+      <TimeSheetCalendar year={year.getFullYear()} month={month.getMonth()} />
     </Container>
   );
 };

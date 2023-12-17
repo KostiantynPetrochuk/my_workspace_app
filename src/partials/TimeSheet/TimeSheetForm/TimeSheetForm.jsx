@@ -22,7 +22,6 @@ const TimeSheetForm = ({
   const users = useSelector(selectUsers);
 
   const handleChangeSelectedUser = (event) => {
-    console.log(event.target.value);
     setSelectedUserId(event.target.value);
   };
 
@@ -85,10 +84,7 @@ const TimeSheetForm = ({
             label="Рік"
             views={["year"]}
             value={year}
-            onChange={(newValue) => {
-              console.log("year", newValue);
-              setYear(newValue);
-            }}
+            onChange={(newValue) => setYear(newValue)}
           />
         </Box>
         <Box
@@ -102,10 +98,7 @@ const TimeSheetForm = ({
             label="Місяць"
             views={["month"]}
             value={month}
-            onChange={(newValue) => {
-              console.log("month", newValue);
-              setMonth(newValue);
-            }}
+            onChange={(newValue) => setMonth(newValue)}
           />
         </Box>
       </Card>

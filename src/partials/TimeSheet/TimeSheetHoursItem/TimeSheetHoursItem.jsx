@@ -37,13 +37,25 @@ const TimeSheetHoursItem = ({ logsItem }) => {
 
   const logsItemsList = logsItem?.logs?.map((log, index) => {
     if (log.status === "in") {
-      return <TimeSheetHoursSubItem key={index} logStatus={log.status} />;
+      return (
+        <TimeSheetHoursSubItem
+          key={index}
+          logId={log._id}
+          logStatus={"in"}
+          date={log.date}
+        />
+      );
     }
     if (log.status === "out") {
       return (
         <React.Fragment key={index}>
-          <TimeSheetHoursSubItem logStatus={"in"} date={log.entries.in.date} />
           <TimeSheetHoursSubItem
+            logId={log._id}
+            logStatus={"in"}
+            date={log.entries.in.date}
+          />
+          <TimeSheetHoursSubItem
+            logId={log._id}
             logStatus={"out"}
             date={log.entries.out.date}
           />
@@ -77,6 +89,7 @@ const TimeSheetHoursItem = ({ logsItem }) => {
             }}
             elevation={24}
           >
+            Понеділок, 25 грудня 2023
             {logsItemsList}
           </Paper>
         </Box>

@@ -1,3 +1,5 @@
+import { useSelector } from "react-redux";
+import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Card } from "@mui/material";
@@ -6,11 +8,12 @@ import Stack from "@mui/material/Stack";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import FunctionsIcon from "@mui/icons-material/Functions";
 import Divider from "@mui/material/Divider";
-import PropTypes from "prop-types";
 
 import TimeSheetCalendarRow from "../TimeSheetCalendarRow/TimeSheetCalendarRow";
+import { selectSelectedUserLogs } from "../../../features/selectedUserLogs/selectedUserLogsSlice";
 
-const TimeSheetCalendar = ({ logsList = [], year, month }) => {
+const TimeSheetCalendar = ({ year, month }) => {
+  const logsList = useSelector(selectSelectedUserLogs);
   const daysInChunks = chunkArray(logsList, 7);
   const rows = daysInChunks.map((logs, index) => (
     <TimeSheetCalendarRow key={index} logs={logs} year={year} month={month} />
@@ -81,12 +84,12 @@ TimeSheetCalendar.propTypes = {
   month: PropTypes.number,
 };
 
-function chunkArray(array, chunkSize) {
+const chunkArray = (array, chunkSize) => {
   const resultArray = [];
   for (let i = 0; i < array.length; i += chunkSize) {
     resultArray.push(array.slice(i, i + chunkSize));
   }
   return resultArray;
-}
+};
 
 export default TimeSheetCalendar;
