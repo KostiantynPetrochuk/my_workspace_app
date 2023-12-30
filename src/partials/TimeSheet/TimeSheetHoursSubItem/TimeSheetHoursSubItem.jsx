@@ -10,10 +10,11 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import WorkIcon from "@mui/icons-material/Work";
 import WorkOffIcon from "@mui/icons-material/WorkOff";
 import EditIcon from "@mui/icons-material/Edit";
+
 import TimeSheetHoursEditModal from "../TimeSheetHoursEditModal";
 import TimeSheetHoursDeleteModal from "../TimeSheetHoursDeleteModal";
 
-const TimeSheetHoursSubItem = ({ logId, logStatus, date }) => {
+const TimeSheetHoursSubItem = ({ logId, logStatus, date, dateString }) => {
   const [openEditModal, setOpenEditModal] = React.useState(false);
   const [openDeleteModal, setOpenDeleteModal] = React.useState(false);
 
@@ -97,10 +98,15 @@ const TimeSheetHoursSubItem = ({ logId, logStatus, date }) => {
       <TimeSheetHoursEditModal
         open={openEditModal}
         handleClose={handleCloseEditModal}
+        logId={logId}
+        logStatus={logStatus}
+        date={date}
+        dateString={dateString}
       />
       <TimeSheetHoursDeleteModal
         open={openDeleteModal}
         handleClose={handleCloseDeleteModal}
+        dateString={dateString}
       />
     </ListItem>
   );
@@ -110,6 +116,7 @@ TimeSheetHoursSubItem.propTypes = {
   logId: PropTypes.string,
   logStatus: PropTypes.string,
   date: PropTypes.string,
+  dateString: PropTypes.string,
 };
 
 export default TimeSheetHoursSubItem;

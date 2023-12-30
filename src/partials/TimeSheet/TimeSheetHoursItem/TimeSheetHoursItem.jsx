@@ -4,10 +4,33 @@ import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import Paper from "@mui/material/Paper";
 import Popover from "@mui/material/Popover";
-import TimeSheetHoursSubItem from "../TimeSheetHoursSubItem/TimeSheetHoursSubItem";
+import Fab from "@mui/material/Fab";
+import AddIcon from "@mui/icons-material/Add";
+import Typography from "@mui/material/Typography";
+import { getDay, getMonth } from "date-fns";
 
-const TimeSheetHoursItem = ({ logsItem }) => {
+import TimeSheetHoursSubItem from "../TimeSheetHoursSubItem/TimeSheetHoursSubItem";
+import TimeSheetAddingModal from "../TimeSheetAddingModal";
+import { DAYS, MONTHS } from "../../../constants";
+
+const TimeSheetHoursItem = ({ logsItem, year, month }) => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [openAddingLogModal, setOpenAddingLogModal] = useState(false);
+
+  const date = new Date(year, month, logsItem?.day);
+  const monthIndex = getMonth(date);
+  const dayOfWeek = getDay(date);
+  const dayOfWeekString = DAYS[dayOfWeek];
+  const monthString = MONTHS[monthIndex];
+  const dateString = `${dayOfWeekString.UA}, ${logsItem?.day} ${monthString.UA} ${year}`;
+
+  const handleOpenAddingLogModal = () => {
+    setOpenAddingLogModal(true);
+  };
+
+  const handleCloseAddingLogModal = () => {
+    setOpenAddingLogModal(false);
+  };
 
   const handleClick = (event) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -43,6 +66,7 @@ const TimeSheetHoursItem = ({ logsItem }) => {
           logId={log._id}
           logStatus={"in"}
           date={log.date}
+          dateString={dateString}
         />
       );
     }
@@ -53,11 +77,13 @@ const TimeSheetHoursItem = ({ logsItem }) => {
             logId={log._id}
             logStatus={"in"}
             date={log.entries.in.date}
+            dateString={dateString}
           />
           <TimeSheetHoursSubItem
             logId={log._id}
             logStatus={"out"}
             date={log.entries.out.date}
+            dateString={dateString}
           />
         </React.Fragment>
       );
@@ -86,11 +112,32 @@ const TimeSheetHoursItem = ({ logsItem }) => {
             sx={{
               padding: 2,
               textAlign: "center",
+              minWidth: "332px",
             }}
             elevation={24}
           >
-            Понеділок, 25 грудня 2023
-            {logsItemsList}
+            <Typography variant="subtitle1" component="span">
+              {dateString}
+            </Typography>
+            {logsItemsList?.length > 0 ? (
+              logsItemsList
+            ) : (
+              <Box sx={{ margin: 2 }}>Немає записів</Box>
+            )}
+            <Box>
+              <Fab
+                onClick={handleOpenAddingLogModal}
+                color="primary"
+                aria-label="add"
+              >
+                <AddIcon />
+              </Fab>
+              <TimeSheetAddingModal
+                open={openAddingLogModal}
+                handleClose={handleCloseAddingLogModal}
+                dateString={dateString}
+              />
+            </Box>
           </Paper>
         </Box>
       </Popover>
@@ -100,6 +147,8 @@ const TimeSheetHoursItem = ({ logsItem }) => {
 
 TimeSheetHoursItem.propTypes = {
   logsItem: PropTypes.object,
+  year: PropTypes.number,
+  month: PropTypes.number,
 };
 
 export default TimeSheetHoursItem;

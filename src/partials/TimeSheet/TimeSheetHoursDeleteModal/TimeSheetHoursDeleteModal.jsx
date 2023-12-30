@@ -14,7 +14,7 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import WorkIcon from "@mui/icons-material/Work";
 import WorkOffIcon from "@mui/icons-material/WorkOff";
 
-const TimeSheetHoursDeleteModal = ({ open, handleClose }) => {
+const TimeSheetHoursDeleteModal = ({ open, handleClose, dateString }) => {
   const handleClickSubmit = () => {
     // console.log("ok");
   };
@@ -39,7 +39,7 @@ const TimeSheetHoursDeleteModal = ({ open, handleClose }) => {
             sx={{ marginBottom: 2 }}
             id="alert-dialog-description"
           >
-            Понеділок, 25 грудня 2023
+            {dateString}
           </DialogContentText>
           {/*  */}
           <ListItem sx={{ minWidth: "300px" }}>
@@ -106,6 +106,7 @@ const TimeSheetHoursDeleteModal = ({ open, handleClose }) => {
 TimeSheetHoursDeleteModal.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
+  dateString: PropTypes.string,
 };
 
 export default TimeSheetHoursDeleteModal;
