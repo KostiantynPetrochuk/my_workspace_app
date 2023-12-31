@@ -1,4 +1,5 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import { format } from "date-fns";
 import Button from "@mui/material/Button";
@@ -14,14 +15,53 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import WorkIcon from "@mui/icons-material/Work";
 import WorkOffIcon from "@mui/icons-material/WorkOff";
 
-const TimeSheetHoursDeleteModal = ({ open, handleClose, dateString }) => {
-  const handleClickSubmit = () => {
-    // console.log("ok");
+import useFetchPrivate from "../../../hooks/useFetchPrivate";
+import useMessage from "../../../hooks/useMessage";
+import {
+  updateLogs,
+  deleteLog,
+} from "../../../features/selectedUserLogs/selectedUserLogsSlice";
+
+const TimeSheetHoursDeleteModal = ({
+  open,
+  handleClose,
+  dateString,
+  logId,
+  logStatus,
+  date,
+}) => {
+  const fetchPrivate = useFetchPrivate();
+  const dispatch = useDispatch();
+  const showMessage = useMessage();
+
+  const handleClickSubmit = async () => {
+    const result = await fetchPrivate(`timeLogs`, {
+      method: "DELETE",
+      body: JSON.stringify({
+        logId,
+        logStatus,
+      }),
+    });
+
+    if (result.newLog) {
+      dispatch(updateLogs(result.newLog));
+      showMessage({
+        title: "Успіх!",
+        text: "Фіксацію успішно видалено!",
+        severity: "success",
+      });
+      handleClose();
+      return;
+    }
+
+    dispatch(deleteLog({ _id: logId, date }));
+    showMessage({
+      title: "Успіх!",
+      text: "Фіксацію успішно видалено!",
+      severity: "success",
+    });
+    handleClose();
   };
-
-  const logStatus = "in";
-
-  const date = new Date();
 
   return (
     <React.Fragment>
@@ -41,7 +81,6 @@ const TimeSheetHoursDeleteModal = ({ open, handleClose, dateString }) => {
           >
             {dateString}
           </DialogContentText>
-          {/*  */}
           <ListItem sx={{ minWidth: "300px" }}>
             <ListItemText
               primary={
@@ -90,7 +129,6 @@ const TimeSheetHoursDeleteModal = ({ open, handleClose, dateString }) => {
               }
             />
           </ListItem>
-          {/*  */}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClickSubmit}>Підтвердити</Button>
@@ -107,6 +145,9 @@ TimeSheetHoursDeleteModal.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   dateString: PropTypes.string,
+  logId: PropTypes.string,
+  logStatus: PropTypes.string,
+  date: PropTypes.string,
 };
 
 export default TimeSheetHoursDeleteModal;

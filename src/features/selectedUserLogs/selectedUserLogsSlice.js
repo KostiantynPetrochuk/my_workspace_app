@@ -12,16 +12,25 @@ const selectedUserLogsSlice = createSlice({
     updateLogs: (state, action) => {
       const updatedLog = action.payload;
       const day = new Date(updatedLog.date).getDate();
-      const dayIndex = state.findIndex((log) => log.day === day);
-      const logIndex = state[dayIndex].logs.findIndex(
-        (log) => log.id === updatedLog.id
-      );
+      const dayIndex = state.findIndex((log) => log.day === day && log.logs);
+      const logIndex = state[dayIndex].logs.findIndex((log) => {
+        return log._id === updatedLog._id;
+      });
       state[dayIndex].logs[logIndex] = updatedLog;
+    },
+    deleteLog: (state, action) => {
+      const deletedLog = action.payload;
+      const day = new Date(deletedLog.date).getDate();
+      const dayIndex = state.findIndex((log) => log.day === day && log.logs);
+      const logIndex = state[dayIndex].logs.findIndex((log) => {
+        return log._id === deletedLog._id;
+      });
+      state[dayIndex].logs.splice(logIndex, 1);
     },
   },
 });
 
-export const { setSelectedUserLogs, updateLogs } =
+export const { setSelectedUserLogs, updateLogs, deleteLog } =
   selectedUserLogsSlice.actions;
 
 export const selectSelectedUserLogs = (state) => state.selectedUserLogs;

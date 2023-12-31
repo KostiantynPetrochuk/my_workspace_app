@@ -48,7 +48,9 @@ const TimeSheetHoursEditModal = ({
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Редагування входу"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">
+          {"Редагування фіксації"}
+        </DialogTitle>
         <DialogContent sx={{ paddingTop: 10 }}>
           <DialogContentText
             sx={{ marginBottom: 2 }}

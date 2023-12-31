@@ -107,6 +107,9 @@ const TimeSheetHoursSubItem = ({ logId, logStatus, date, dateString }) => {
         open={openDeleteModal}
         handleClose={handleCloseDeleteModal}
         dateString={dateString}
+        date={date}
+        logId={logId}
+        logStatus={logStatus}
       />
     </ListItem>
   );

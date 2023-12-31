@@ -65,7 +65,7 @@ const TimeSheetHoursItem = ({ logsItem, year, month }) => {
           key={index}
           logId={log._id}
           logStatus={"in"}
-          date={log.date}
+          date={log.entries.in.date}
           dateString={dateString}
         />
       );
